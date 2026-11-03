@@ -2042,13 +2042,186 @@
                 position: relative;
                 top: auto;
                 left: auto;
-                width: 130vw;
-                margin: 0 0 -3vw -15vw;
+                width: 118%;
+                align-self: center;
+                margin: 0 -9% -2vw;
                 transform: none
             }
 
             .ab-hero__copy {
                 flex: none
+            }
+        }
+
+        /* ===== Work: image cards with a blue info panel revealed from behind the image ===== */
+        .wx {
+            position: relative;
+            background: #0b0a09;
+            padding: 0 var(--pad) clamp(40px, 6vw, 120px)
+        }
+
+        .wx-marq {
+            display: grid;
+            gap: clamp(8px, 1.2vw, 26px);
+            overflow: hidden;
+            margin: 0 calc(var(--pad)*-1) clamp(28px, 4vw, 90px);
+            padding: clamp(18px, 2.4vw, 60px) 0;
+            border-block: 1px solid rgba(255, 255, 255, .14)
+        }
+
+        .wx-marq__row {
+            display: flex;
+            width: max-content;
+            white-space: nowrap;
+            will-change: transform;
+            font-weight: 800;
+            font-size: clamp(44px, 8.5vw, 210px);
+            letter-spacing: -.05em;
+            line-height: 1.18;
+            padding-block: .04em
+        }
+
+        .wx-marq__row span {
+            padding-right: .55em
+        }
+
+        .wx-marq__row--o {
+            -webkit-text-stroke: 2px rgba(255, 255, 255, .75);
+            color: transparent
+        }
+
+        .wx-stack {
+            display: flex;
+            flex-direction: column;
+            gap: clamp(28px, 4vw, 72px)
+        }
+
+        .wx-card {
+            --r: clamp(18px, 2.2vw, 52px);
+            --p: 1;
+            position: relative;
+            display: block;
+            isolation: isolate;
+            color: #fff;
+            text-decoration: none
+        }
+
+        .wx-card:focus-visible {
+            outline: 3px solid #0B6CFF;
+            outline-offset: 6px;
+            border-radius: var(--r)
+        }
+
+        /* the image: always on top (z-index 3), covers the whole visible card */
+        .wx-media {
+            position: relative;
+            z-index: 3;
+            overflow: hidden;
+            height: min(74svh, 54vw);
+            min-height: max(340px, var(--need, 0px));
+            background: var(--bg);
+            border-radius: var(--r) var(--r) calc(var(--r)*(1 - min(1, var(--p)*4))) calc(var(--r)*(1 - min(1, var(--p)*4)))
+        }
+
+        .wx-pic {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 1.2s cubic-bezier(.2, .7, .2, 1)
+        }
+
+        .wx-card:hover .wx-pic {
+            transform: scale(1.04)
+        }
+
+        /* the blue panel: sits underneath (z-index 1) and slides DOWN out from behind the image as --p goes 0 -> 1 */
+        .wx-info {
+            position: relative;
+            z-index: 1;
+            border-radius: 0 0 var(--r) var(--r);
+            background: linear-gradient(160deg, #2d7bff 0%, #0a3fa8 100%);
+            transform: translate3d(0, calc((var(--p) - 1)*100%), 0);
+            will-change: transform
+        }
+
+        .wx-info__in {
+            display: grid;
+            grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr);
+            gap: clamp(20px, 3vw, 80px);
+            align-items: end;
+            padding: clamp(22px, 2.8vw, 76px);
+            opacity: var(--p);
+            transform: translate3d(0, calc((1 - var(--p))*-26px), 0)
+        }
+
+        .wx-cat {
+            display: block;
+            font-weight: 700;
+            font-size: clamp(13px, 1.2vw, 42px);
+            letter-spacing: -.015em;
+            color: rgba(255, 255, 255, .78)
+        }
+
+        .wx-info h3 {
+            margin-top: .2em;
+            font-weight: 800;
+            font-size: clamp(34px, 5vw, 150px);
+            line-height: .94;
+            letter-spacing: -.05em
+        }
+
+        .wx-info p {
+            max-width: 26em;
+            font-weight: 600;
+            font-size: clamp(14px, 1.3vw, 48px);
+            line-height: 1.22;
+            letter-spacing: -.012em;
+            color: rgba(255, 255, 255, .86)
+        }
+
+        .wx-go {
+            display: inline-flex;
+            align-items: center;
+            gap: .6em;
+            margin-top: 1.2em;
+            padding: .75em 1.2em;
+            border-radius: 999px;
+            background: rgba(255, 255, 255, .18);
+            font-weight: 700;
+            font-size: clamp(13px, 1.1vw, 38px);
+            transition: background .35s, color .35s, gap .35s cubic-bezier(.2, .7, .2, 1)
+        }
+
+        .wx-card:hover .wx-go {
+            background: #fff;
+            color: #0a3fa8;
+            gap: 1em
+        }
+
+        @media (max-width:860px) {
+            .wx-media {
+                height: min(64svh, 94vw)
+            }
+
+            .wx-info__in {
+                grid-template-columns: 1fr;
+                gap: 14px;
+                padding: 22px
+            }
+
+            .wx-info h3 {
+                font-size: clamp(34px, 11vw, 72px)
+            }
+
+            .wx-info p {
+                font-size: clamp(14px, 3.8vw, 18px)
+            }
+
+            .wx-cat,
+            .wx-go {
+                font-size: 14px
             }
         }
     </style>
@@ -2084,139 +2257,241 @@
             <div class="ab-hero__copy">
                 <h1 class="ab-hero__h"><span class="ab-mask"><span>Our</span></span><span
                         class="ab-mask"><span>work.</span></span></h1>
-                <p class="ab-hero__p" id="pgLead">Websites, products and experiences built to <em>perform as well as
-                        they look.</em></p>
+                <p class="ab-hero__p" id="pgLead">Ten projects, one scroll. <em>Move your mouse, scroll slowly, click
+                        any card.</em></p>
             </div>
         </section>
-        <section class="wk" aria-label="Projects">
-            <!-- CHANGE A LINK: edit the href="https://example.com/project-N" on each card (the whole card is clickable).
-                 ADD A PROJECT: copy one <a class="wk-card wk-card--wide js-clip"> below, set --c-bg / --c-fg / --c-sub,
-                 and add <div class="wk-card__media js-par js-media"><img src="images/your-project.jpg" alt="Project name"></div> as its first child.
-                 Add class "wk-card--wide" for a full-width card. Animations attach automatically. -->
-            <div class="wk-grid" id="projects">
-                <a class="wk-card wk-card--wide has-img js-clip" href="https://example.com/project-1" target="_blank"
-                    rel="noopener" aria-label="Web &amp; Product. (opens project)"
-                    style="--c-bg:#1f6fe0;--c-fg:#fff;--c-sub:rgba(255,255,255,.7)">
-                    <div class="wk-card__media js-par js-media"><img
-                            src="./images/Silver Laptop Displaying Creative Studio Website.png" alt="" loading="lazy"
-                            onerror="this.closest('.wk-card').classList.remove('has-img');this.parentElement.remove()">
-                    </div><span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Web &amp; Product</span>
-                        <h3>Web &amp; Product.</h3>
-                        <p>Fast, scalable platforms engineered around real users.</p>
+        <section class="wx" aria-label="Projects">
+            <div class="wx-marq" aria-hidden="true">
+                <div class="wx-marq__row"><span>Websites ✦</span><span>Stores ✦</span><span>Web apps
+                        ✦</span><span>Brands ✦</span><span>Security ✦</span><span>Websites ✦</span><span>Stores
+                        ✦</span><span>Web apps ✦</span><span>Brands ✦</span><span>Security ✦</span></div>
+                <div class="wx-marq__row wx-marq__row--o"><span>Scroll slowly ✦</span><span>Move your mouse
+                        ✦</span><span>Click a card ✦</span><span>Play with it ✦</span><span>Scroll slowly
+                        ✦</span><span>Move your mouse ✦</span><span>Click a card ✦</span><span>Play with it ✦</span>
+                </div>
+            </div>
+            <!-- CHANGE A LINK: edit href="https://example.com/project-N" on each card (the whole card is clickable).
+                 YOUR IMAGE: each card has one <img class="wx-pic" src="images/work-N.png"> that fills the card. Change the src (or save files as images/work-1.png … work-10.png).
+                 ADD A PROJECT: copy one <a class="wx-card"> block, set --bg (shows if the image is missing), the text, and the image src. -->
+            <div class="wx-stack">
+                <a class="wx-card" style="--bg:linear-gradient(160deg,#2d7bff,#0a3fa8)"
+                    href="https://www.shopelvanoir.com/" target="_blank" rel="noopener"
+                    aria-label="Web & Product (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/elvanoir.png" alt="Web & Product" loading="lazy"
+                            onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Fashion &amp; E-Commerce</span>
+                                <h3>Elvanoir..</h3>
+                            </div>
+                            <div>
+                                <p>“Premium leather. Timeless style. Modern elegance.”</p><span class="wx-go">View
+                                    project <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                        aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-2" target="_blank"
-                    rel="noopener" aria-label="Brand &amp; Digital Design. (opens project)"
-                    style="--c-bg:#ebe8e0;--c-fg:#111;--c-sub:rgba(17,17,17,.55)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Brand &amp; Digital Design</span>
-                        <h3>Brand &amp; Digital Design.</h3>
-                        <p>Identities and interfaces that look as sharp as they perform.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#ffb765 0%,transparent 58%),linear-gradient(160deg,#f2701a,#9c3205)"
+                    href="https://primevortex.co/" target="_blank" rel="noopener"
+                    aria-label="Brand & Digital Design (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/primevortex.png" alt="Brand & Digital Design"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Digital Solutions</span>
+                                <h3>PrimeVortex.</h3>
+                            </div>
+                            <div>
+                                <p>“Creative design. Powerful websites. Innovative digital solutions.”</p><span
+                                    class="wx-go">View project <svg width="16" height="16" viewBox="0 0 16 16"
+                                        fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-3" target="_blank"
-                    rel="noopener" aria-label="3D, Motion &amp; Interactive. (opens project)"
-                    style="--c-bg:#0e5a3a;--c-fg:#fff;--c-sub:rgba(255,255,255,.7)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Motion &amp; Interactive</span>
-                        <h3>3D, Motion &amp; Interactive.</h3>
-                        <p>Immersive experiences that make people stop scrolling.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#3be08f,transparent 58%),linear-gradient(160deg,#0e8a52,#053a22)"
+                    href="https://www.mnhitsolutions.com/" target="_blank" rel="noopener"
+                    aria-label="3D, Motion & Interactive (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/mnhitsolutions.png" alt="3D, Motion & Interactive"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">IT &amp; Digital Solutions</span>
+                                <h3>MNH IT Solutions.</h3>
+                            </div>
+                            <div>
+                                <p>“Smart technology. Seamless solutions. Digital innovation.”</p><span class="wx-go">View
+                                    project <svg width="16" height="16" viewBox="0 0 16 16" fill="none"
+                                        aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-4" target="_blank"
-                    rel="noopener" aria-label="Cybersecurity Analysis. (opens project)"
-                    style="--c-bg:#0d3b40;--c-fg:#fff;--c-sub:rgba(255,255,255,.7)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Security</span>
-                        <h3>Cybersecurity Analysis.</h3>
-                        <p>Vulnerability reviews and hardening that protect your site and your customers.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#ff7676 0%,transparent 58%),linear-gradient(160deg,#df2a3b,#6f0a1b)"
+                    href="https://chelseaautoworx.vercel.app/" target="_blank" rel="noopener"
+                    aria-label="Cybersecurity Analysis (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/chelseaautoworx.png" alt="Cybersecurity Analysis"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Automotive &amp; Auto Services</span>
+                                <h3>Chelsea AutoWorx.</h3>
+                            </div>
+                            <div>
+                                <p>“Expert automotive care. Reliable service. Performance you can trust.”</p>
+                                <span class="wx-go">View project <svg width="16" height="16" viewBox="0 0 16 16"
+                                        fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-5" target="_blank"
-                    rel="noopener" aria-label="E-Commerce Stores. (opens project)"
-                    style="--c-bg:#dde6f7;--c-fg:#111;--c-sub:rgba(17,17,17,.55)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">E-Commerce</span>
-                        <h3>E-Commerce Stores.</h3>
-                        <p>Online stores that make buying simple and selling scalable.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 86% 6%,#46e591 0%,transparent 58%),linear-gradient(160deg,#10985c,#05452c)"
+                    href="https://bloom-thread.vercel.app/" target="_blank" rel="noopener"
+                    aria-label="E-Commerce Stores (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/bloom-thread.png" alt="E-Commerce Stores"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Fashion &amp; Lifestyle</span>
+                                <h3>Bloom & Thread.</h3>
+                            </div>
+                            <div>
+                                <p>“Everyday elegance. Modern fashion. Effortless style.”</p><span
+                                    class="wx-go">View project <svg width="16" height="16" viewBox="0 0 16 16"
+                                        fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-6" target="_blank"
-                    rel="noopener" aria-label="Web Applications. (opens project)"
-                    style="--c-bg:#5b3bdc;--c-fg:#fff;--c-sub:rgba(255,255,255,.7)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Web Applications</span>
-                        <h3>Web Applications.</h3>
-                        <p>Dashboards, portals and custom platforms that power daily operations.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#a78bff 0%,transparent 58%),linear-gradient(160deg,#5b3bdc,#1b0f66)"
+                    href="https://bridge-scape.vercel.app/index.html" target="_blank" rel="noopener"
+                    aria-label="Web Applications (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/bridge-scape.png" alt="Web Applications"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Business Consulting &amp; Strategy</span>
+                                <h3>BridgeScape.</h3>
+                            </div>
+                            <div>
+                                <p>“Strategic clarity. Operational excellence. Sustainable business growth.”</p><span
+                                    class="wx-go">View project <svg width="16" height="16" viewBox="0 0 16 16"
+                                        fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-7" target="_blank"
-                    rel="noopener" aria-label="Real Estate Websites. (opens project)"
-                    style="--c-bg:#f1d9b5;--c-fg:#111;--c-sub:rgba(17,17,17,.55)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Real Estate</span>
-                        <h3>Real Estate Websites.</h3>
-                        <p>Property sites that turn visitors into leads.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#b88aff 0%,transparent 58%),linear-gradient(160deg,#7a3df0,#35118a)"
+                    href="https://www.amaan.tech/" target="_blank" rel="noopener"
+                    aria-label="Real Estate Websites (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/amaan.png" alt="Real Estate Websites"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Digital &amp; Technology</span>
+                                <h3>Portfolio</h3>
+                            </div>
+                            <div>
+                                <p>“Creative vision. Modern design. Digital excellence.”</p><span class="wx-go">View project
+                                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-8" target="_blank"
-                    rel="noopener" aria-label="Portfolios. (opens project)"
-                    style="--c-bg:#7a1f2b;--c-fg:#fff;--c-sub:rgba(255,255,255,.7)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Portfolios</span>
-                        <h3>Portfolios.</h3>
-                        <p>Portfolios that put your best work first.</p>
+                <!-- <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#ff6b7d,transparent 58%),linear-gradient(160deg,#b3243a,#4a0c18)"
+                    href="https://example.com/project-8" target="_blank" rel="noopener"
+                    aria-label="Portfolios (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/work-8.png" alt="Portfolios" loading="lazy"
+                            onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Portfolios</span>
+                                <h3>Portfolios.</h3>
+                            </div>
+                            <div>
+                                <p>Portfolios that put your best work first.</p><span class="wx-go">View project <svg
+                                        width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-9" target="_blank"
-                    rel="noopener" aria-label="SEO &amp; Optimization. (opens project)"
-                    style="--c-bg:#e07a12;--c-fg:#111;--c-sub:rgba(17,17,17,.6)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">SEO &amp; Optimization</span>
-                        <h3>SEO &amp; Optimization.</h3>
-                        <p>Speed, structure and visibility that bring the right visitors to you.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#ffc25a 0%,transparent 58%),linear-gradient(160deg,#e07a12,#7a3300)"
+                    href="https://example.com/project-9" target="_blank" rel="noopener"
+                    aria-label="SEO & Optimization (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/work-9.png" alt="SEO & Optimization"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">SEO &amp; Optimization</span>
+                                <h3>SEO &amp; Optimization.</h3>
+                            </div>
+                            <div>
+                                <p>Speed, structure and visibility that bring the right visitors to you.</p><span
+                                    class="wx-go">View project <svg width="16" height="16" viewBox="0 0 16 16"
+                                        fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
                 </a>
-                <a class="wk-card wk-card--wide js-clip" href="https://example.com/project-10" target="_blank"
-                    rel="noopener" aria-label="Maintenance &amp; Support. (opens project)"
-                    style="--c-bg:#0e8f86;--c-fg:#fff;--c-sub:rgba(255,255,255,.7)">
-                    <span class="wk-card__go" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 16 16"
-                            fill="none" aria-hidden="true">
-                            <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor" stroke-width="1.5" />
-                        </svg></span>
-                    <div class="wk-card__txt"><span class="wk-card__cat">Support</span>
-                        <h3>Maintenance &amp; Support.</h3>
-                        <p>Updates, monitoring and fixes, so your website keeps working.</p>
+                <a class="wx-card"
+                    style="--bg:radial-gradient(120% 90% at 88% 6%,#4de3d0 0%,transparent 58%),linear-gradient(160deg,#0e8f86,#033d3a)"
+                    href="https://example.com/project-10" target="_blank" rel="noopener"
+                    aria-label="Maintenance & Support (opens project)">
+                    <div class="wx-media"><img class="wx-pic" src="images/work-10.png" alt="Maintenance & Support"
+                            loading="lazy" onerror="this.remove()"></div>
+                    <div class="wx-info">
+                        <div class="wx-info__in">
+                            <div><span class="wx-cat">Support</span>
+                                <h3>Maintenance &amp; Support.</h3>
+                            </div>
+                            <div>
+                                <p>Updates, monitoring and fixes, so your website keeps working.</p><span
+                                    class="wx-go">View project <svg width="16" height="16" viewBox="0 0 16 16"
+                                        fill="none" aria-hidden="true">
+                                        <path d="M2 8h11M9 3.5 13.5 8 9 12.5" stroke="currentColor"
+                                            stroke-width="1.5" />
+                                    </svg></span>
+                            </div>
+                        </div>
                     </div>
-                </a>
+                </a> -->
             </div>
         </section>
         <section class="ab-talk" aria-label="Let’s talk">
@@ -2243,16 +2518,17 @@
         <h2 class="foot__bye">Bye.</h2>
         <div class="foot__cols">
             <nav class="foot__big" aria-label="Footer">
-            <nav class="foot__big" aria-label="Footer">
-                <a href="./work.html">Work.</a>
-                <a href="./services.html">Solutions.</a>
-                <a href="./about.html">About.</a>
+                <a href="work.html">Work.</a>
+                <a href="services.html">Solutions.</a>
+                <a href="about.html">About.</a>
+                <a href="#newsletter">Newsletter.</a>
             </nav>
             <ul class="foot__small">
                 <li><a href="contact.html">Contact us.</a></li>
                 <li><a href="#" data-todo="add LinkedIn URL">Linkedin.</a></li>
-                <li><a href="https://www.facebook.com/profile.php?id=61595754741139&rdid=ns1186eivbPlsUc8&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1A2ey9E2bM%2F#"
-                        data-todo="add Facebook URL">Facebook.</a></li>
+                <li><a href="#" data-todo="add Instagram URL">Instagram.</a></li>
+                <li><a href="#" data-todo="add X URL">X.</a></li>
+                <li><a href="#" data-todo="add legal page">Legal notices.</a></li>
             </ul>
             <div class="foot__news" id="newsletter">
                 <h3>Get 4A Tech in your inbox.</h3>
@@ -2464,6 +2740,53 @@
                     say('We couldn’t subscribe you. Check your connection and try again.');
                 } finally { btn.disabled = false; }
             });
+        })();
+
+    </script>
+    <script>
+        /* 4A Tech — Work page: scroll-linked reveal (blue panel slides down from behind each image) + velocity marquee.
+           No ScrollTrigger in this site, so this uses rAF + CSS variables (--p = reveal progress 0..1). */
+        (() => {
+            const F = window.FOURA, stack = document.querySelector('.wx-stack');
+            if (!F || !stack) return;
+            const { $, $$, reduce } = F, clamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
+            const S = $$('.wx-card', stack).map(c => ({ c, media: $('.wx-media', c), info: $('.wx-info', c), cur: reduce ? 1 : 0, tgt: reduce ? 1 : 0 }));
+
+            /* the panel must always be shorter than the image so it can hide fully behind it */
+            const fit = () => S.forEach(s => s.c.style.setProperty('--need', (s.info.offsetHeight + 24) + 'px'));
+
+            /* target progress: starts when the image is fully in view, finishes after ~1/3 of a screen of scrolling (raise .34 to make the reveal slower, lower to make it faster) */
+            const aim = () => { const vh = innerHeight; S.forEach(s => { s.tgt = reduce ? 1 : clamp((vh * .98 - s.media.getBoundingClientRect().bottom) / (vh * .34)); }); };
+            let running = false;
+            const tick = () => {
+                let moving = false;
+                S.forEach(s => {
+                    const d = s.tgt - s.cur;
+                    if (Math.abs(d) > .0006) { s.cur += d * .14; moving = true; } else s.cur = s.tgt;
+                    s.c.style.setProperty('--p', s.cur.toFixed(4));
+                });
+                running = moving; if (moving) requestAnimationFrame(tick);
+            };
+            const kick = () => { aim(); if (!running) { running = true; requestAnimationFrame(tick); } };
+            S.forEach(s => s.c.style.setProperty('--p', s.cur));
+            addEventListener('scroll', kick, { passive: true });
+            addEventListener('resize', () => { fit(); kick(); });
+            fit(); kick();
+            addEventListener('load', () => { fit(); kick(); });
+
+            /* Marquee: speed and skew follow scroll velocity; reverses with scroll direction */
+            if (reduce) return;
+            const rows = $$('.wx-marq__row'); let last = scrollY, vel = 0; const pos = rows.map(() => 0);
+            (function loop() {
+                vel += ((scrollY - last) - vel) * .12; last = scrollY;
+                rows.forEach((row, i) => {
+                    const half = row.scrollWidth / 2, dir = i % 2 ? 1 : -1;
+                    pos[i] += dir * (.6 + Math.abs(vel) * .45) * (vel < 0 ? -1 : 1);
+                    if (pos[i] <= -half) pos[i] += half; if (pos[i] > 0) pos[i] -= half;
+                    row.style.transform = 'translate3d(' + pos[i].toFixed(1) + 'px,0,0) skewX(' + clamp(vel * -.3, -14, 14).toFixed(2) + 'deg)';
+                });
+                requestAnimationFrame(loop);
+            })();
         })();
 
     </script>
